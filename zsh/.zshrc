@@ -183,6 +183,7 @@ alias yt="youtube-dl --add-metadata -i"
 alias yta="yt -x -f bestaudio/best"
 alias ffmpeg="ffmpeg -hide_banner"
 alias cp="cp -iv"
+alias v="doas nvim"
 
 # Colorize commands when possible.
 
