@@ -98,10 +98,11 @@ source ~/.config/zsh/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme 2>/dev/null
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-export KITTY_ENABLE_WAYLAND=1
-
 #exporting language
-export LC_ALL="en_IN.UTF-8"
-export LANG="en_IN.UTF-8"
-export LANGUAGE="en_IN:en"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LANGUAGE="en_US:en"
+
+#exporting go
+export PATH=$PATH:$HOME/.local/opt/go/bin
 
