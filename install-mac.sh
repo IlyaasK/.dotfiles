@@ -63,6 +63,7 @@ CASK_PACKAGES=(
     microsoft-office
     docker
     betterdisplay
+    comet
     linearmouse
     mactex-no-gui
 )
