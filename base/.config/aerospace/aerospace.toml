@@ -1,0 +1,80 @@
+# AeroSpace Configuration
+# Based on your Hyprland dotfiles
+# All main bindings use 'alt' (Option) to mimic 'SUPER' but avoid conflicting with native macOS Cmd keys.
+
+start-at-login = true
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Gaps (Set to 0 to match your hyprland gaps_in = 0, gaps_out = 0)
+[gaps]
+inner.horizontal = 0
+inner.vertical = 0
+outer.left = 0
+outer.right = 0
+outer.top = 0
+outer.bottom = 0
+
+[mode.main.binding]
+# --- Launch Apps ---
+alt-enter = 'exec-and-forget open -n -a Ghostty'
+alt-b = 'exec-and-forget open -a "Zen Browser"'
+alt-n = 'exec-and-forget open -a "Standard Notes"'
+alt-s = 'exec-and-forget open -a Signal'
+alt-r = 'exec-and-forget open -a Raycast' # Using Raycast instead of Rofi/dmenu
+alt-e = 'exec-and-forget open ~'          # Open Finder in home directory (your File Manager)
+
+# --- Window Management ---
+alt-q = 'close'
+alt-v = 'layout floating tiling'         # Toggle floating
+alt-j = 'layout horizontal vertical'     # Toggle split direction (closest to dwindle togglesplit)
+alt-f = 'fullscreen'
+
+# --- Focus Movement (Arrow Keys) ---
+alt-left = 'focus left'
+alt-right = 'focus right'
+alt-up = 'focus up'
+alt-down = 'focus down'
+
+# --- Window Movement ---
+alt-shift-left = 'move left'
+alt-shift-right = 'move right'
+alt-shift-up = 'move up'
+alt-shift-down = 'move down'
+
+# --- Move Window to Monitor ---
+alt-ctrl-left = 'move-node-to-monitor --wrap-around next'
+alt-ctrl-right = 'move-node-to-monitor --wrap-around prev'
+alt-ctrl-up = 'move-node-to-monitor --wrap-around next'
+alt-ctrl-down = 'move-node-to-monitor --wrap-around prev'
+
+# --- Workspaces ---
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
+
+# --- Move to Workspace ---
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+alt-shift-0 = 'move-node-to-workspace 10'
+
+# --- Scratchpad (Magic Workspace in Hyprland) ---
+alt-m = 'workspace magic'
+alt-shift-m = 'move-node-to-workspace magic'
+
+# X Scratchpad (Zen Browser Tweet)
+alt-x = 'exec-and-forget open "https://x.com/intent/tweet"'
