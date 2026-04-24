@@ -8,6 +8,7 @@ echo "Installing core tools, CLI utilities, and Hyprland ecosystem..."
 
 # Note: Some package names might slightly vary depending on the Fedora version and active repositories.
 sudo dnf install -y \
+    git \
     stow \
     zsh \
     neovim \
