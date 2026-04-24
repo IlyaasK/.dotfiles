@@ -66,6 +66,7 @@ CASK_PACKAGES=(
     comet
     linearmouse
     mactex-no-gui
+    font-jetbrains-mono-nerd-font
 )
 
 for cask in "${CASK_PACKAGES[@]}"; do

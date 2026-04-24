@@ -9,6 +9,7 @@ echo "Installing core tools, CLI utilities, and Hyprland ecosystem..."
 # Note: Some package names might slightly vary depending on the Fedora version and active repositories.
 sudo dnf install -y \
     git \
+    wget \
     stow \
     zsh \
     neovim \
@@ -42,6 +43,16 @@ sudo dnf install -y \
     playerctl \
     qmk \
     zmk
+
+echo "Installing JetBrains Mono Nerd Font..."
+FONT_DIR="$HOME/.local/share/fonts/JetBrainsMonoNerd"
+if [ ! -d "$FONT_DIR" ]; then
+    mkdir -p "$FONT_DIR"
+    wget -qO- "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz" | tar -xJ -C "$FONT_DIR"
+    fc-cache -fv
+else
+    echo "JetBrains Mono Nerd Font is already installed."
+fi
 
 echo "Installing uv (Fast Python package installer)..."
 curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed to install uv"

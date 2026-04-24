@@ -58,7 +58,8 @@ sudo pacman -S --needed --noconfirm \
     rofi-wayland \
     brightnessctl \
     playerctl \
-    qmk
+    qmk \
+    ttf-jetbrains-mono-nerd
 
 echo "Installing AUR packages via paru..."
 paru -S --needed --noconfirm \
