@@ -154,3 +154,19 @@ fi
 
 # Switch escape and caps if tty and no passwd required:
 sudo -n loadkeys ${XDG_DATA_HOME:-$HOME/.local/share}/larbs/ttymaps.kmap 2>/dev/null
+
+# -----------------------------------------------------------------------------
+# Auto-sync workspace once a day
+# -----------------------------------------------------------------------------
+SYNC_STAMP="${XDG_CACHE_HOME:-$HOME/.cache}/workspace_sync_date"
+TODAY=$(date +%Y-%m-%d)
+
+if [[ ! -f "$SYNC_STAMP" ]] || [[ "$(cat "$SYNC_STAMP")" != "$TODAY" ]]; then
+    mkdir -p "$(dirname "$SYNC_STAMP")"
+    echo "$TODAY" > "$SYNC_STAMP"
+    
+    # Run sync in background so it doesn't block terminal startup
+    if command -v workspace-sync &> /dev/null; then
+        (workspace-sync &> /dev/null &)
+    fi
+fi

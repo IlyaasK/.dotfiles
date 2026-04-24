@@ -33,12 +33,14 @@ sudo pacman -S --needed --noconfirm \
     fzf \
     lf \
     highlight \
+    github-cli \
     ffmpeg \
     yt-dlp \
     transmission-cli \
     zathura \
     zathura-pdf-mupdf \
     python \
+    go \
     unzip \
     typst \
     texlive-basic \
@@ -74,5 +76,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed 
 
 echo "Installing gemini-cli via npm..."
 sudo npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli"
+
+echo "Installing bootdev CLI..."
+go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
 
 echo "✅ Arch Linux installation script finished!"

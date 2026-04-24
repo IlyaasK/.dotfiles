@@ -35,6 +35,7 @@ CLI_PACKAGES=(
     typst
     jq
     node
+    gh
 )
 
 for pkg in "${CLI_PACKAGES[@]}"; do
@@ -104,5 +105,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed 
 
 echo "Installing gemini-cli via npm..."
 npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli. Make sure Node.js is correctly set up."
+
+echo "Installing bootdev CLI..."
+go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
 
 echo "✅ Mac installation script finished!"

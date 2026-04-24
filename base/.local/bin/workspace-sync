@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Silently syncs all git repositories in ~/workspace/
+# Uses parallel to speed it up if there are a lot of repos, otherwise iterates.
+
+WORKSPACE_DIR="$HOME/workspace"
+
+if [ ! -d "$WORKSPACE_DIR" ]; then
+    exit 0
+fi
+
+# Find all git directories and pull them
+find "$WORKSPACE_DIR" -type d -name ".git" 2>/dev/null | while read -r gitdir; do
+    repo=$(dirname "$gitdir")
+    # Pull with autostash to not break dirty working trees, run in background to be fast
+    git -C "$repo" pull --rebase --autostash -q &>/dev/null &
+done
+
+# Wait for all background pulls to finish
+wait

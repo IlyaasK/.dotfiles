@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Sets up the workspace directories and optionally pulls down Kernel repositories.
+echo "====================================="
+echo "   Building Developer Workspace"
+echo "====================================="
+
+mkdir -p ~/workspace/github.com/IlyaasK
+
+echo ""
+read -p "Are you still at Kernel? [y/N]: " at_kernel
+if [[ "$at_kernel" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+    KERNEL_DIR="$HOME/workspace/github.com/IlyaasK/kernel"
+    mkdir -p "$KERNEL_DIR"
+    echo "✅ Created $KERNEL_DIR"
+    
+    if command -v gh &> /dev/null; then
+        echo ""
+        echo "Fetching Kernel repositories updated in the last 7 days..."
+        
+        # Cross-platform date calculation for 7 days ago
+        if date --version &>/dev/null; then
+            SEVEN_DAYS_AGO=$(date -d '7 days ago' +%Y-%m-%d)
+        else
+            SEVEN_DAYS_AGO=$(date -v-7d +%Y-%m-%d)
+        fi
+        
+        cd "$KERNEL_DIR" || exit
+        
+        # Use gh search to find recently updated repos
+        gh search repos --org kernel --updated ">$SEVEN_DAYS_AGO" --limit 1000 --json nameWithOwner -q '.[].nameWithOwner' | while read -r repo; do
+            if [ -n "$repo" ]; then
+                # Strip the org name to just get the repo name for the folder
+                repo_name=$(basename "$repo")
+                if [ ! -d "$repo_name" ]; then
+                    echo "Cloning $repo..."
+                    gh repo clone "$repo" "$repo_name" 2>/dev/null || echo "→ Failed to clone $repo"
+                else
+                    echo "→ $repo_name already exists, skipping."
+                fi
+            fi
+        done
+        echo "✅ Kernel repository sync complete!"
+    else
+        echo "⚠️  GitHub CLI (gh) not found! Cannot clone Kernel organization automatically."
+        echo "Install it via your OS package manager and run 'gh auth login'."
+    fi
+else
+    echo "Skipping Kernel setup."
+fi
+
+echo "====================================="
+echo "Workspace setup complete!"

@@ -10,6 +10,7 @@ echo "Installing core tools, CLI utilities, and Hyprland ecosystem..."
 sudo dnf install -y \
     git \
     wget \
+    gh \
     stow \
     zsh \
     neovim \
@@ -24,6 +25,7 @@ sudo dnf install -y \
     zathura \
     zathura-pdf-mupdf \
     python3 \
+    golang \
     unzip \
     typst \
     texlive-scheme-basic \
@@ -59,6 +61,9 @@ curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed 
 
 echo "Installing gemini-cli via npm..."
 sudo npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli"
+
+echo "Installing bootdev CLI..."
+go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
 
 echo "Note: Standard Notes, zsh-autocomplete, and zsh-history-substring-search might need to be installed manually (e.g. Flatpak for Standard Notes, or git clone for the ZSH plugins if they aren't in dnf)."
 
