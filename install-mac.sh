@@ -27,6 +27,14 @@ CLI_PACKAGES=(
     python
     go
     tmux
+    zsh-autocomplete
+    zsh-autosuggestions
+    zsh-history-substring-search
+    zsh-syntax-highlighting
+    unzip
+    typst
+    jq
+    node
 )
 
 for pkg in "${CLI_PACKAGES[@]}"; do
@@ -56,6 +64,7 @@ CASK_PACKAGES=(
     docker
     betterdisplay
     linearmouse
+    mactex-no-gui
 )
 
 for cask in "${CASK_PACKAGES[@]}"; do
@@ -79,11 +88,19 @@ CUSTOM_PACKAGES=(
     pi
     kernel
     antigravity
+    qmk/qmk/qmk
+    zmk
 )
 
 for custom in "${CUSTOM_PACKAGES[@]}"; do
     echo "Attempting to install $custom..."
     brew install "$custom" || echo "⚠️ Warning: Failed to install $custom (May require a custom tap or manual install)"
 done
+
+echo "Installing uv (Fast Python package installer)..."
+curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed to install uv"
+
+echo "Installing gemini-cli via npm..."
+npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli. Make sure Node.js is correctly set up."
 
 echo "✅ Mac installation script finished!"

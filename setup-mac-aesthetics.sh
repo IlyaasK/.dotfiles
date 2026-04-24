@@ -12,6 +12,11 @@ echo "1. Swapping Caps Lock to Escape..."
 # 0x39 = Caps Lock, 0x29 = Escape
 hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}'
 
+echo "2. Setting blazing fast keyboard repeat rates (ThePrimeagen defaults)..."
+defaults write -g InitialKeyRepeat -int 10
+defaults write -g KeyRepeat -int 1
+defaults write -g ApplePressAndHoldEnabled -bool false
+
 echo "2. Disabling macOS Window Animations..."
 defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
 defaults write -g NSWindowResizeTime -float 0.001

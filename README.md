@@ -23,6 +23,11 @@ Depending on your operating system, run the correct installer to get all require
 ./install-fedora.sh
 ```
 
+**For Arch Linux:**
+```bash
+./install-arch.sh
+```
+
 ### 3. Deploy Configs
 Once the packages are installed, deploy the symlinks to your home directory:
 ```bash
@@ -45,5 +50,6 @@ This script will:
 - `base/` - The core GNU Stow package. Everything in here perfectly mirrors your home folder (`~/`). For example, `base/.config/` maps to `~/.config/`.
 - `install-mac.sh` - Installs Homebrew packages and casks.
 - `install-fedora.sh` - Installs Fedora dnf packages.
+- `install-arch.sh` - Installs Arch pacman/AUR packages (using paru).
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
 - `deploy.sh` - Uses Stow to safely link your dotfiles.
