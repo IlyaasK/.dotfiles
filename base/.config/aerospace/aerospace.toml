@@ -23,6 +23,7 @@ alt-n = 'exec-and-forget open -a "Standard Notes"'
 alt-s = 'exec-and-forget open -a Signal'
 alt-r = 'exec-and-forget open -a Raycast' # Using Raycast instead of Rofi/dmenu
 alt-e = 'exec-and-forget open ~'          # Open Finder in home directory (your File Manager)
+alt-slash = 'exec-and-forget open ~/.config/aerospace/aerospace.toml' # Help / Cheat Sheet
 
 # --- Window Management ---
 alt-q = 'close'

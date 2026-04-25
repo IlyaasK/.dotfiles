@@ -54,3 +54,12 @@ This script will:
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
 - `deploy.sh` - Uses Stow to safely link your dotfiles.
+
+## 🛡️ Safe Migration for Existing Machines
+Because this repository is engineered using **GNU Stow** and **Homebrew/OS Package Managers**, it is incredibly safe to install on a machine that already has an active workspace.
+
+If you are pulling these dotfiles down to an existing machine (like an established Mac):
+
+1. **Package Managers are Idempotent**: If you run `./install-mac.sh`, Homebrew will simply skip any apps you already have installed (e.g. `neovim` or `git`) without overwriting or destroying them.
+2. **GNU Stow prevents Data Loss**: If Stow attempts to link a config file (like `~/.zshrc`) but notices you already have an existing physical file there, **it will throw an error and refuse to link**. It forces you to manually rename/backup your old config (`mv ~/.zshrc ~/.zshrc.bak`) and run `./deploy.sh` again, completely preventing accidental overwrites.
+3. **SSH Key Preservation**: `./setup-git.sh` natively checks for existing `id_ed25519` SSH keys. If you already have one, it safely skips key generation to preserve your current GitHub access, and only appends the correct `~/.ssh/config` parameters.
