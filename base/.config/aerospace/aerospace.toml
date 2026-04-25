@@ -18,7 +18,7 @@ outer.bottom = 0
 [mode.main.binding]
 # --- Launch Apps ---
 alt-enter = 'exec-and-forget open -n -a Ghostty'
-alt-b = 'exec-and-forget open -a "Zen Browser"'
+alt-b = 'exec-and-forget open -a Zen'
 alt-n = 'exec-and-forget open -a "Standard Notes"'
 alt-s = 'exec-and-forget open -a Signal'
 alt-r = 'exec-and-forget open -a Raycast' # Using Raycast instead of Rofi/dmenu

@@ -6,7 +6,7 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-
+.zcompdump
 # Backup files created by deployment script
 *.bak
 
