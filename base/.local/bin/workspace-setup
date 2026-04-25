@@ -18,6 +18,9 @@ if [[ "$at_kernel" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
         echo ""
         echo "Fetching Kernel repositories updated in the last 7 days..."
         
+        # Explicitly force GitHub CLI to use SSH for all git operations
+        gh config set git_protocol ssh
+        
         # Cross-platform date calculation for 7 days ago
         if date --version &>/dev/null; then
             SEVEN_DAYS_AGO=$(date -d '7 days ago' +%Y-%m-%d)
