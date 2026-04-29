@@ -12,6 +12,8 @@ brew update
 
 echo "Installing CLI utilities and programming languages..."
 CLI_PACKAGES=(
+  caddy
+  e2fsprogs
   stow
   zsh
   neovim
