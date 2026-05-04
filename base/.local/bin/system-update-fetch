@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Silently fetches OS and package updates (runs via cron).
+# On Linux, this is intended to run as root. On macOS, as the user.
+
+LOGFILE="/tmp/system-update-fetch.log"
+echo "--- Starting update fetch at $(date) ---" >> "$LOGFILE"
+
+if [[ "$(uname)" == "Darwin" ]]; then
+    echo "Running macOS update fetch..." >> "$LOGFILE"
+    
+    # Download and Install ONLY recommended (security) updates, skipping massive feature upgrades
+    softwareupdate -i -r >> "$LOGFILE" 2>&1
+    
+    # Update Homebrew metadata
+    if command -v brew &> /dev/null; then
+        brew update >> "$LOGFILE" 2>&1
+        # Fetch the binaries/bottles for outdated packages without installing them
+        OUTDATED=$(brew outdated --formula)
+        if [ -n "$OUTDATED" ]; then
+            echo "$OUTDATED" | xargs brew fetch >> "$LOGFILE" 2>&1
+        fi
+        
+        OUTDATED_CASKS=$(brew outdated --cask)
+        if [ -n "$OUTDATED_CASKS" ]; then
+            echo "$OUTDATED_CASKS" | xargs brew fetch >> "$LOGFILE" 2>&1
+        fi
+    fi
+
+elif command -v dnf &> /dev/null; then
+    echo "Running Fedora update fetch..." >> "$LOGFILE"
+    # Update DNF metadata and download RPMs without installing
+    dnf makecache >> "$LOGFILE" 2>&1
+    dnf update --downloadonly -y >> "$LOGFILE" 2>&1
+
+elif command -v pacman &> /dev/null; then
+    echo "Running Arch Linux update fetch..." >> "$LOGFILE"
+    # Synchronize database and download packages to cache without installing
+    pacman -Syw --noconfirm >> "$LOGFILE" 2>&1
+fi
+
+echo "--- Finished update fetch at $(date) ---" >> "$LOGFILE"

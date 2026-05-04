@@ -52,6 +52,7 @@ This script will:
 - `install-fedora.sh` - Installs Fedora dnf packages.
 - `install-arch.sh` - Installs Arch pacman/AUR packages (using paru).
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
+- `setup-updater-cron.sh` - Installs a weekly background cronjob to safely fetch OS updates.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
 - `deploy.sh` - Uses Stow to safely link your dotfiles.
 
