@@ -41,6 +41,9 @@ fi
 echo "5. Auto-hiding the macOS Dock and Menu Bar..."
 defaults write com.apple.dock autohide -bool true
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
+# Make dock appear instantly with no delay
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0.15
 killall Dock || true
 
 echo "6. Starting AutoRaise (Focus follows mouse)..."
@@ -49,6 +52,22 @@ if command -v autoraise &> /dev/null; then
 else
     echo "AutoRaise not installed. Run ./install-mac.sh first if you want focus-follows-mouse."
 fi
+
+echo "7. Disabling autocorrect, autocapitalize, and smart substitutions..."
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
+echo "8. Finder: show all file extensions, disable extension change warning..."
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+killall Finder || true
+
+echo "9. Screenshots: save to Desktop, no drop shadow..."
+defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+defaults write com.apple.screencapture disable-shadow -bool true
+
 
 echo "✅ macOS aesthetics setup complete!"
 echo "Note: The Caps Lock mapping via hidutil will reset on reboot."
