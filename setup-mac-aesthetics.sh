@@ -59,14 +59,30 @@ defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
-echo "8. Finder: show all file extensions, disable extension change warning..."
+echo "8. Finder: show all file extensions, show hidden/dot files, disable extension change warning..."
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 killall Finder || true
 
 echo "9. Screenshots: save to Desktop, no drop shadow..."
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 defaults write com.apple.screencapture disable-shadow -bool true
+
+echo "10. Setting up split keyboard layout overlay (Mac port of feh overlay)..."
+KEEB_SCRIPT="${HOME}/.config/hypr/scripts/split_keeb_layout_mac.sh"
+KEEB_SWIFT="${HOME}/.config/hypr/scripts/kb_overlay.swift"
+KEEB_BIN="${HOME}/.config/hypr/scripts/kb_overlay"
+if [ -f "$KEEB_SCRIPT" ]; then
+    chmod +x "$KEEB_SCRIPT"
+    if [ -f "$KEEB_SWIFT" ]; then
+        echo "  Compiling Swift overlay binary (one-time)..."
+        swiftc -o "$KEEB_BIN" "$KEEB_SWIFT" && echo "  ✅ Binary compiled at $KEEB_BIN"
+    fi
+    echo "  ✅ Keyboard overlay ready — bind alt-k in AeroSpace or run: split_keeb_layout_mac.sh toggle"
+else
+    echo "  ⚠️  Overlay script not found at $KEEB_SCRIPT — run stow/deploy.sh first."
+fi
 
 
 echo "✅ macOS aesthetics setup complete!"

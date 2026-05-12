@@ -31,6 +31,11 @@ alt-v = 'layout floating tiling'         # Toggle floating
 alt-j = 'layout horizontal vertical'     # Toggle split direction (closest to dwindle togglesplit)
 alt-f = 'fullscreen'
 
+# --- Split Keyboard Layout Overlay (mirrors Hyprland Super+K hold/release → toggle) ---
+# Hyprland: bind = Super, K → show | bindrt = Super, K → hide (hold-to-show)
+# AeroSpace: alt-k toggles (show if hidden, hide if showing) on the focused monitor
+alt-k = 'exec-and-forget ~/.config/hypr/scripts/split_keeb_layout_mac.sh toggle'
+
 # --- Focus Movement (Arrow Keys) ---
 alt-left = 'focus left'
 alt-right = 'focus right'
@@ -79,3 +84,12 @@ alt-shift-m = 'move-node-to-workspace magic'
 
 # X Scratchpad (Zen Browser Tweet)
 alt-x = 'exec-and-forget open "https://x.com/intent/tweet"'
+
+# ---------------------------------------------------------------------------
+# Window Rules
+# Mirrors Hyprland windowrulev2: float, pin, noanim, noborder for kb-overlay
+# 'ignore' removes it from AeroSpace workspace management → stays on all workspaces
+# ---------------------------------------------------------------------------
+[[on-window-detected]]
+if.window-title-regex-substring = 'kb-overlay'
+run = 'layout floating'

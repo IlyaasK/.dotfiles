@@ -36,5 +36,8 @@ cd "$DOTFILES_DIR"
 echo "Stowing 'base' package into $HOME..."
 stow -t "$HOME" base
 
+chmod +x "$HOME/.config/hypr/scripts"/*.sh 2>/dev/null || true
+chmod +x "$HOME/.config/hypr/scripts"/*.swift 2>/dev/null || true
+
 echo "✅ Dotfiles deployed successfully!"
 echo "Your ~/.config and ~/.zshrc files are now symlinked to this repository."

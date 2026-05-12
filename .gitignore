@@ -18,3 +18,4 @@ Thumbs.db
 .zsh_history
 .zsh_sessions/
 .zcompdump
+base/.config/hypr/scripts/kb_overlay
