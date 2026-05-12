@@ -43,6 +43,7 @@ sudo dnf install -y \
     rofi-wayland \
     brightnessctl \
     playerctl \
+    mpv \
     qmk \
     zmk
 
