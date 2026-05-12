@@ -91,11 +91,13 @@ CUSTOM_PACKAGES=(
   codex
   opencode
   pi
-  kernel
+  onkernel/tap/kernel
   antigravity
   qmk/qmk/qmk
   zmk
 )
+
+brew tap onkernel/tap
 
 for custom in "${CUSTOM_PACKAGES[@]}"; do
   echo "Attempting to install $custom..."
