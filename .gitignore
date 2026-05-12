@@ -17,5 +17,5 @@ Thumbs.db
 # Zsh history and sessions
 .zsh_history
 .zsh_sessions/
-.zcompdump
+.zcompdump*
 base/.config/hypr/scripts/kb_overlay

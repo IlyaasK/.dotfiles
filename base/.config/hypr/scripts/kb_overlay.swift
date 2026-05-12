@@ -25,9 +25,10 @@ let targetScreen = NSScreen.screens.first(where: { NSMouseInRect(mouseLocation, 
 
 let screenFrame = targetScreen.visibleFrame
 
-// Image display size (match original feh geometry)
-let winW: CGFloat = 557
-let winH: CGFloat = 1076
+// Scale to 95% of screen height, preserving image aspect ratio
+let imgAspect = img.size.width / img.size.height
+let winH = floor(screenFrame.height * 0.95)
+let winW = floor(winH * imgAspect)
 
 // Centered on the focused screen
 let winX = screenFrame.midX - winW / 2

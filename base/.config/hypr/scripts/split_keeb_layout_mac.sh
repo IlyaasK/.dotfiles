@@ -6,7 +6,7 @@
 # Usage: split_keeb_layout_mac.sh show | hide | toggle
 
 PID_FILE="/tmp/kb_overlay_pid"
-IMAGE_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/split_keeb_keymap.png"
+IMAGE_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/split_keep_layout_new.jpg"
 BINARY="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/kb_overlay"
 
 show_overlay() {
