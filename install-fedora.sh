@@ -8,10 +8,20 @@ echo "Installing core tools, CLI utilities, and Hyprland ecosystem..."
 
 # Note: Some package names might slightly vary depending on the Fedora version and active repositories.
 sudo dnf install -y \
+    curl \
     git \
-    wget \
     gh \
+    jq \
+    mupdf \
+    ncdu \
+    redis \
     stow \
+    tailscale \
+    tmux \
+    tree \
+    unzip \
+    usbutils \
+    wget \
     zsh \
     neovim \
     eza \
@@ -26,10 +36,8 @@ sudo dnf install -y \
     zathura-pdf-mupdf \
     python3 \
     golang \
-    unzip \
     typst \
     texlive-scheme-basic \
-    jq \
     nodejs \
     zsh-autosuggestions \
     zsh-syntax-highlighting \
@@ -47,6 +55,9 @@ sudo dnf install -y \
     qmk \
     zmk
 
+echo "Configuring Caps Lock/Escape swap for Linux XKB..."
+sudo localectl set-x11-keymap us pc105 "" caps:swapescape || echo "⚠️ Warning: Failed to configure Caps Lock/Escape swap with localectl"
+
 echo "Installing JetBrains Mono Nerd Font..."
 FONT_DIR="$HOME/.local/share/fonts/JetBrainsMonoNerd"
 if [ ! -d "$FONT_DIR" ]; then
@@ -59,6 +70,9 @@ fi
 
 echo "Installing uv (Fast Python package installer)..."
 curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed to install uv"
+
+echo "Installing Temporal CLI..."
+go install github.com/temporalio/cli/cmd/temporal@latest || echo "⚠️ Warning: Failed to install Temporal CLI"
 
 echo "Installing gemini-cli via npm..."
 sudo npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli"
