@@ -18,8 +18,10 @@ defaults write -g KeyRepeat -int 1
 defaults write -g ApplePressAndHoldEnabled -bool false
 
 echo "2. Disabling macOS Window Animations..."
+defaults write com.apple.universalaccess reduceMotion -bool true
 defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
 defaults write -g NSWindowResizeTime -float 0.001
+killall Dock Finder SystemUIServer || true
 
 echo "3. Installing and starting JankyBorders for window borders..."
 if ! command -v borders &> /dev/null; then
