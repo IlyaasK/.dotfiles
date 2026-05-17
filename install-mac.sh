@@ -98,6 +98,7 @@ CASK_PACKAGES=(
   zen-browser
   ghostty
   claude
+  claude-code
   codex-app
   goland
   clion
@@ -135,7 +136,6 @@ echo "Attempting to install Niche/Custom/Internal CLI Tools..."
 CUSTOM_PACKAGES=(
   amp
   omlx
-  codex
   opencode
   pi
   onkernel/tap/kernel
@@ -148,11 +148,11 @@ for custom in "${CUSTOM_PACKAGES[@]}"; do
   brew_formula "$custom"
 done
 
-echo "Installing gemini-cli via npm..."
-npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli. Make sure Node.js is correctly set up."
+echo "Installing gemini-cli..."
+brew_formula gemini-cli
 
-echo "Installing Claude Code and Codex CLI via npm..."
-npm install -g @anthropic-ai/claude-code @openai/codex || echo "⚠️ Warning: Failed to install Claude Code/Codex CLI. Make sure Node.js is correctly set up."
+echo "Installing Codex CLI via npm..."
+npm install -g @openai/codex || echo "⚠️ Warning: Failed to install Codex CLI. Make sure Node.js is correctly set up."
 
 echo "Installing bootdev CLI..."
 go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
