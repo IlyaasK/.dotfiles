@@ -25,7 +25,19 @@ fi
 
 echo "Installing core tools, CLI utilities, and Hyprland ecosystem from official repos..."
 sudo pacman -S --needed --noconfirm \
+    curl \
+    github-cli \
+    jq \
+    mupdf \
+    ncdu \
+    redis \
     stow \
+    tailscale \
+    tmux \
+    tree \
+    unzip \
+    usbutils \
+    wget \
     zsh \
     neovim \
     eza \
@@ -33,7 +45,6 @@ sudo pacman -S --needed --noconfirm \
     fzf \
     lf \
     highlight \
-    github-cli \
     ffmpeg \
     yt-dlp \
     transmission-cli \
@@ -41,10 +52,8 @@ sudo pacman -S --needed --noconfirm \
     zathura-pdf-mupdf \
     python \
     go \
-    unzip \
     typst \
     texlive-basic \
-    jq \
     nodejs \
     npm \
     zsh-autosuggestions \
@@ -63,6 +72,9 @@ sudo pacman -S --needed --noconfirm \
     qmk \
     ttf-jetbrains-mono-nerd
 
+echo "Configuring Caps Lock/Escape swap for Linux XKB..."
+sudo localectl set-x11-keymap us pc105 "" caps:swapescape || echo "⚠️ Warning: Failed to configure Caps Lock/Escape swap with localectl"
+
 echo "Installing AUR packages via paru..."
 paru -S --needed --noconfirm \
     zen-browser-bin \
@@ -73,6 +85,9 @@ paru -S --needed --noconfirm \
 
 echo "Installing uv (Fast Python package installer)..."
 curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed to install uv"
+
+echo "Installing Temporal CLI..."
+go install github.com/temporalio/cli/cmd/temporal@latest || echo "⚠️ Warning: Failed to install Temporal CLI"
 
 echo "Installing gemini-cli via npm..."
 sudo npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini-cli"
