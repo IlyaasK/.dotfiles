@@ -31,12 +31,16 @@ defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
 defaults write -g NSWindowResizeTime -float 0.001
 killall Dock Finder SystemUIServer || true
 
-echo "6. Reducing transparency and Liquid Glass effects..."
+echo "6. Keeping Spaces separate per display..."
+defaults write com.apple.spaces "spans-displays" -bool false
+killall SystemUIServer || true
+
+echo "7. Reducing transparency and Liquid Glass effects..."
 defaults write com.apple.universalaccess reduceTransparency -bool true
 defaults write com.apple.Accessibility ReduceTransparencyEnabled -bool true
 killall cfprefsd Dock Finder SystemUIServer || true
 
-echo "7. Installing and starting JankyBorders for window borders..."
+echo "8. Installing and starting JankyBorders for window borders..."
 if ! command -v borders &> /dev/null; then
     brew tap FelixKratz/formulae
     brew install borders
@@ -44,7 +48,7 @@ fi
 # Start borders as a background service so it runs on startup
 brew services start borders || echo "Note: Run 'borders &' manually if service fails."
 
-echo "8. Setting the wallpaper..."
+echo "9. Setting the wallpaper..."
 # Ensure the wallpaper exists in the stowed directory
 WALLPAPER_PATH="$HOME/.config/hypr/current-wallpaper.jpg"
 if [ -f "$WALLPAPER_PATH" ]; then
@@ -53,7 +57,7 @@ else
     echo "Wallpaper not found at $WALLPAPER_PATH. Skipping."
 fi
 
-echo "9. Auto-hiding the macOS Dock and Menu Bar..."
+echo "10. Auto-hiding the macOS Dock and Menu Bar..."
 defaults write com.apple.dock autohide -bool true
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
 defaults write com.apple.dock persistent-apps -array
@@ -63,30 +67,30 @@ defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0.15
 killall Dock || true
 
-echo "10. Starting AutoRaise (Focus follows mouse)..."
+echo "11. Starting AutoRaise (Focus follows mouse)..."
 if command -v autoraise &> /dev/null; then
     brew services start autoraise || echo "Note: Run 'autoraise' manually if service fails."
 else
     echo "AutoRaise not installed. Run ./install-mac.sh first if you want focus-follows-mouse."
 fi
 
-echo "11. Disabling autocorrect, autocapitalize, and smart substitutions..."
+echo "12. Disabling autocorrect, autocapitalize, and smart substitutions..."
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
-echo "12. Finder: show all file extensions, show hidden/dot files, disable extension change warning..."
+echo "13. Finder: show all file extensions, show hidden/dot files, disable extension change warning..."
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 killall Finder || true
 
-echo "13. Screenshots: save to Desktop, no drop shadow..."
+echo "14. Screenshots: save to Desktop, no drop shadow..."
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 defaults write com.apple.screencapture disable-shadow -bool true
 
-echo "14. Setting up split keyboard layout overlay (Mac port of feh overlay)..."
+echo "15. Setting up split keyboard layout overlay (Mac port of feh overlay)..."
 KEEB_SCRIPT="${HOME}/.config/hypr/scripts/split_keeb_layout_mac.sh"
 KEEB_SWIFT="${HOME}/.config/hypr/scripts/kb_overlay.swift"
 KEEB_BIN="${HOME}/.config/hypr/scripts/kb_overlay"
