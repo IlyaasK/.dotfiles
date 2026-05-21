@@ -97,6 +97,16 @@ source_first() {
     return 1
 }
 
+ensure_powerlevel10k() {
+    local target="$ZSH_PLUGIN_HOME/powerlevel10k"
+    if [ -r "$target/powerlevel10k.zsh-theme" ]; then
+        return 0
+    fi
+    command -v git &>/dev/null || return 1
+    mkdir -p "$(dirname "$target")" || return 1
+    git clone --depth 1 https://github.com/romkatv/powerlevel10k.git "$target" &>/dev/null
+}
+
 ZSH_PLUGIN_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 if command -v brew &>/dev/null; then
     HOMEBREW_PREFIX="$(brew --prefix)"
@@ -130,12 +140,16 @@ source_first \
 
 source_first \
     "$ZSH_PLUGIN_HOME/powerlevel10k/powerlevel10k.zsh-theme" \
+    "${HOMEBREW_PREFIX:-}/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme" \
     "${HOMEBREW_PREFIX:-}/share/powerlevel10k/powerlevel10k.zsh-theme" \
+    "/opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme" \
+    "/usr/local/share/powerlevel10k/powerlevel10k.zsh-theme" \
     "/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme" \
-    "/usr/share/powerlevel10k/powerlevel10k.zsh-theme"
+    "/usr/share/powerlevel10k/powerlevel10k.zsh-theme" \
+    || { ensure_powerlevel10k && source_first "$ZSH_PLUGIN_HOME/powerlevel10k/powerlevel10k.zsh-theme"; }
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+[[ ! -f "${ZDOTDIR:-$HOME/.config/zsh}/.p10k.zsh" ]] || source "${ZDOTDIR:-$HOME/.config/zsh}/.p10k.zsh"
 
 #exporting language
 export LC_ALL="en_US.UTF-8"
