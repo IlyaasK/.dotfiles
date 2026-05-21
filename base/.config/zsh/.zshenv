@@ -1,4 +1,4 @@
 ZDOTDIR=$HOME/.config/zsh
 
 # uv
-export PATH="/home/ilyaas/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

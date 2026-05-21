@@ -86,12 +86,53 @@ bindkey '^[[P' delete-char
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-# Load syntax highlighting; should be last.
-source ~/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
-source ~/.config/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
-source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh 2>/dev/null
-source ~/.config/zsh/plugins/zsh-you-should-use/you-should-use.plugin.zsh 2>/dev/null
-source ~/.config/zsh/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme 2>/dev/null
+source_first() {
+    local plugin
+    for plugin in "$@"; do
+        if [ -r "$plugin" ]; then
+            source "$plugin"
+            return 0
+        fi
+    done
+    return 1
+}
+
+ZSH_PLUGIN_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+if command -v brew &>/dev/null; then
+    HOMEBREW_PREFIX="$(brew --prefix)"
+fi
+
+source_first \
+    "$ZSH_PLUGIN_HOME/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" \
+    "${HOMEBREW_PREFIX:-}/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" \
+    "/usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" \
+    "$HOME/.config/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" \
+    || source_first \
+        "${HOMEBREW_PREFIX:-}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+        "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+        "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+source_first \
+    "$ZSH_PLUGIN_HOME/zsh-history-substring-search/zsh-history-substring-search.zsh" \
+    "${HOMEBREW_PREFIX:-}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" \
+    "/usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
+
+source_first \
+    "$ZSH_PLUGIN_HOME/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+    "$ZSH_PLUGIN_HOME/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh" \
+    "${HOMEBREW_PREFIX:-}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+    "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+source_first \
+    "$ZSH_PLUGIN_HOME/zsh-you-should-use/you-should-use.plugin.zsh" \
+    "${HOMEBREW_PREFIX:-}/share/zsh-you-should-use/you-should-use.plugin.zsh" \
+    "/usr/share/zsh/plugins/zsh-you-should-use/you-should-use.plugin.zsh"
+
+source_first \
+    "$ZSH_PLUGIN_HOME/powerlevel10k/powerlevel10k.zsh-theme" \
+    "${HOMEBREW_PREFIX:-}/share/powerlevel10k/powerlevel10k.zsh-theme" \
+    "/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme" \
+    "/usr/share/powerlevel10k/powerlevel10k.zsh-theme"
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

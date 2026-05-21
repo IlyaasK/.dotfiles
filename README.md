@@ -48,9 +48,11 @@ This script will:
 
 ## Directory Structure
 - `base/` - The core GNU Stow package. Everything in here perfectly mirrors your home folder (`~/`). For example, `base/.config/` maps to `~/.config/`.
-- `install-mac.sh` - Installs Homebrew packages and casks.
+- `Brewfile` - Declarative Homebrew package and cask list for macOS.
+- `install-mac.sh` - Installs macOS packages by running `brew bundle`.
 - `install-fedora.sh` - Installs Fedora dnf packages.
 - `install-arch.sh` - Installs Arch pacman/AUR packages (using paru).
+- `setup-zsh-plugins.sh` - Installs Zsh plugins into `${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins` for platforms that do not provide them through the package manager.
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
 - `setup-updater-cron.sh` - Installs a weekly background cronjob to safely fetch OS updates.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.

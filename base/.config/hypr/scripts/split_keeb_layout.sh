@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_PATH="/home/ilyaas/.config/hypr/scripts/split_keep_layout_new.jpg"
+IMAGE_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/split_keep_layout_new.jpg"
 TMP_IMAGE="/tmp/kb_overlay_scaled.jpg"
 PID_FILE="/tmp/kb_overlay_pid"
 
