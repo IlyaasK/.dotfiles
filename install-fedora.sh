@@ -80,7 +80,10 @@ sudo npm install -g gemini-cli || echo "⚠️ Warning: Failed to install gemini
 echo "Installing bootdev CLI..."
 go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
 
-echo "Note: Standard Notes, zsh-autocomplete, and zsh-history-substring-search might need to be installed manually (e.g. Flatpak for Standard Notes, or git clone for the ZSH plugins if they aren't in dnf)."
+echo "Installing Zsh plugins..."
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/setup-zsh-plugins.sh"
+
+echo "Note: Standard Notes and zsh-autocomplete might need to be installed manually (e.g. Flatpak for Standard Notes or a manual plugin install if they aren't in dnf)."
 
 # Some newer/niche tools might not be in the default Fedora repos:
 echo "--------------------------------------------------------"

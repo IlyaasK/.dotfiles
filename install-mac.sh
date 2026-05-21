@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BREWFILE="$DOTFILES_DIR/Brewfile"
+
 export NONINTERACTIVE=1
 export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications"
 
@@ -19,142 +22,26 @@ fi
 
 mkdir -p "$HOME/Applications"
 
-brew_tap() {
-  local tap="$1"
-  brew tap "$tap" || echo "⚠️ Warning: Failed to tap $tap"
-}
-
-brew_formula() {
-  local pkg="$1"
-  echo "Installing $pkg..."
-  brew install "$pkg" || echo "⚠️ Warning: Failed to install $pkg"
-}
-
-brew_cask() {
-  local cask="$1"
-  echo "Installing $cask..."
-  brew install --cask --appdir="$HOME/Applications" "$cask" || echo "⚠️ Warning: Failed to install cask $cask"
-}
-
 echo "Updating Homebrew..."
 brew update
 
-echo "Configuring Homebrew taps..."
-brew_tap FelixKratz/formulae
-brew_tap dimentium/autoraise
-brew_tap homebrew-zathura/zathura
-brew_tap nikitabobko/tap
-brew_tap onkernel/tap
-brew_tap qmk/qmk
-
-echo "Installing CLI utilities and programming languages..."
-CLI_PACKAGES=(
-  caddy
-  curl
-  e2fsprogs
-  gh
-  jq
-  lsusb
-  mupdf
-  ncdu
-  redis
-  stow
-  tailscale
-  temporal
-  zsh
-  neovim
-  eza
-  bat
-  fzf
-  lf
-  highlight
-  ffmpeg
-  yt-dlp
-  transmission-cli
-  zathura
-  zathura-pdf-mupdf
-  python
-  go
-  tmux
-  zsh-autocomplete
-  zsh-autosuggestions
-  zsh-history-substring-search
-  zsh-syntax-highlighting
-  unzip
-  typst
-  tree
-  uv
-  wget
-  node
-)
-
-for pkg in "${CLI_PACKAGES[@]}"; do
-  brew_formula "$pkg"
-done
-
-echo "Installing GUI Applications via Brew Cask..."
-CASK_PACKAGES=(
-  raycast
-  zen-browser
-  ghostty
-  claude
-  claude-code
-  codex-app
-  goland
-  clion
-  vscodium
-  cursor
-  ticktick
-  signal
-  discord
-  standard-notes
-  chromium
-  calibre
-  freecad
-  autodesk-fusion
-  microsoft-office
-  docker
-  betterdisplay
-  comet
-  linearmouse
-  unclutter
-  mactex-no-gui
-  font-jetbrains-mono-nerd-font
-  nikitabobko/tap/aerospace
-)
-
-for cask in "${CASK_PACKAGES[@]}"; do
-  brew_cask "$cask"
-done
-
-echo "Installing AutoRaise (Focus follows mouse)..."
-brew_formula autoraise
-
-echo "Attempting to install Niche/Custom/Internal CLI Tools..."
-# Note: These tools might require specific brew taps (e.g., brew tap company/tools)
-# or manual installation if they are not in the public Homebrew core.
-CUSTOM_PACKAGES=(
-  amp
-  omlx
-  opencode
-  pi
-  onkernel/tap/kernel
-  antigravity
-  qmk/qmk/qmk
-  zmk
-)
-
-for custom in "${CUSTOM_PACKAGES[@]}"; do
-  brew_formula "$custom"
-done
-
-echo "Installing gemini-cli..."
-brew_formula gemini-cli
+echo "Installing Homebrew packages from $BREWFILE..."
+if ! brew bundle --file="$BREWFILE"; then
+  echo "⚠️ Warning: brew bundle reported one or more failures. Review the output above for optional packages that may need manual installation."
+fi
 
 echo "Installing Codex CLI via npm..."
-npm install -g @openai/codex || echo "⚠️ Warning: Failed to install Codex CLI. Make sure Node.js is correctly set up."
+if command -v npm &>/dev/null; then
+  npm install -g @openai/codex || echo "⚠️ Warning: Failed to install Codex CLI. Make sure Node.js is correctly set up."
+else
+  echo "⚠️ Warning: npm is not installed. Skipping Codex CLI install."
+fi
 
 echo "Installing bootdev CLI..."
-go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
+if command -v go &>/dev/null; then
+  go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
+else
+  echo "⚠️ Warning: Go is not installed. Skipping bootdev."
+fi
 
 echo "✅ Mac installation script finished!"

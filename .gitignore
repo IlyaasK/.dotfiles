@@ -19,3 +19,6 @@ Thumbs.db
 .zsh_sessions/
 .zcompdump*
 base/.config/hypr/scripts/kb_overlay
+base/.config/zsh/plugins/
+base/.config/zsh/zsh-theme-powerlevel10k/
+*.zwc

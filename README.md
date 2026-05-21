@@ -15,17 +15,17 @@ Depending on your operating system, run the correct installer to get all require
 
 **For macOS (Requires Homebrew):**
 ```bash
-./install-mac.sh
+bash install-mac.sh
 ```
 
 **For Fedora Asahi:**
 ```bash
-./install-fedora.sh
+bash install-fedora.sh
 ```
 
 **For Arch Linux:**
 ```bash
-./install-arch.sh
+bash install-arch.sh
 ```
 
 ### 3. Deploy Configs
@@ -48,9 +48,11 @@ This script will:
 
 ## Directory Structure
 - `base/` - The core GNU Stow package. Everything in here perfectly mirrors your home folder (`~/`). For example, `base/.config/` maps to `~/.config/`.
-- `install-mac.sh` - Installs Homebrew packages and casks.
+- `Brewfile` - Declarative Homebrew package and cask list for macOS.
+- `install-mac.sh` - Installs macOS packages by running `brew bundle`.
 - `install-fedora.sh` - Installs Fedora dnf packages.
 - `install-arch.sh` - Installs Arch pacman/AUR packages (using paru).
+- `setup-zsh-plugins.sh` - Installs Zsh plugins into `${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins` for platforms that do not provide them through the package manager.
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
 - `setup-updater-cron.sh` - Installs a weekly background cronjob to safely fetch OS updates.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
@@ -61,6 +63,6 @@ Because this repository is engineered using **GNU Stow** and **Homebrew/OS Packa
 
 If you are pulling these dotfiles down to an existing machine (like an established Mac):
 
-1. **Package Managers are Idempotent**: If you run `./install-mac.sh`, Homebrew will simply skip any apps you already have installed (e.g. `neovim` or `git`) without overwriting or destroying them.
+1. **Package Managers are Idempotent**: If you run `bash install-mac.sh`, Homebrew will simply skip any apps you already have installed (e.g. `neovim` or `git`) without overwriting or destroying them.
 2. **GNU Stow prevents Data Loss**: If Stow attempts to link a config file (like `~/.zshrc`) but notices you already have an existing physical file there, **it will throw an error and refuse to link**. It forces you to manually rename/backup your old config (`mv ~/.zshrc ~/.zshrc.bak`) and run `./deploy.sh` again, completely preventing accidental overwrites.
 3. **SSH Key Preservation**: `./setup-git.sh` natively checks for existing `id_ed25519` SSH keys. If you already have one, it safely skips key generation to preserve your current GitHub access, and only appends the correct `~/.ssh/config` parameters.
