@@ -96,6 +96,6 @@ echo "Installing bootdev CLI..."
 go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
 
 echo "Installing Zsh plugins..."
-"$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/setup-zsh-plugins.sh"
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/setup-zsh-plugins.sh"
 
 echo "✅ Arch Linux installation script finished!"
