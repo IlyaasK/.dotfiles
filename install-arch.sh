@@ -98,4 +98,7 @@ go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed 
 echo "Installing Zsh plugins..."
 bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/setup-zsh-plugins.sh"
 
+echo "Installing AI agent skills/plugins..."
+bash "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/setup-ai-skills.sh" || echo "⚠️ Warning: Failed to install AI agent skills/plugins"
+
 echo "✅ Arch Linux installation script finished!"

@@ -53,10 +53,40 @@ This script will:
 - `install-fedora.sh` - Installs Fedora dnf packages.
 - `install-arch.sh` - Installs Arch pacman/AUR packages (using paru).
 - `setup-zsh-plugins.sh` - Installs Zsh plugins into `${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins` for platforms that do not provide them through the package manager.
+- `setup-ai-skills.sh` - Installs Cursor plugins from `cursor/plugins` into Cursor, Claude Code, and Codex.
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
 - `setup-updater-cron.sh` - Installs a weekly background cronjob to safely fetch OS updates.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
 - `deploy.sh` - Uses Stow to safely link your dotfiles.
+
+## AI Agent Skills
+
+`setup-ai-skills.sh` keeps a local checkout of `https://github.com/cursor/plugins.git` in `${XDG_CACHE_HOME:-$HOME/.cache}/cursor-plugins` and links it into local agent config:
+
+- Cursor plugins: `~/.cursor/plugins/local/<plugin>`
+- Claude Code skills: `~/.claude/skills/<skill>`
+- Codex skills: `${CODEX_HOME:-$HOME/.codex}/skills/<skill>`
+
+Run it directly to update the installed skills/plugins:
+
+```bash
+bash setup-ai-skills.sh
+```
+
+Install only specific plugins:
+
+```bash
+bash setup-ai-skills.sh cursor-team-kit cli-for-agent create-plugin
+```
+
+Useful overrides:
+
+```bash
+AI_SKILL_PLUGINS="cursor-team-kit cli-for-agent" bash setup-ai-skills.sh
+AI_SKILL_REPO_DIR="$HOME/src/cursor-plugins" bash setup-ai-skills.sh
+```
+
+Some Cursor plugins include Cursor-specific agents, hooks, rules, or Canvas workflows. Cursor gets the full plugin; Claude Code and Codex get only the portable `SKILL.md` skill directories. If two plugins provide the same skill name, the first marketplace entry wins and the duplicate is skipped.
 
 ## 🛡️ Safe Migration for Existing Machines
 Because this repository is engineered using **GNU Stow** and **Homebrew/OS Package Managers**, it is incredibly safe to install on a machine that already has an active workspace.

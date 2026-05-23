@@ -44,4 +44,7 @@ else
   echo "⚠️ Warning: Go is not installed. Skipping bootdev."
 fi
 
+echo "Installing AI agent skills/plugins..."
+bash "$DOTFILES_DIR/setup-ai-skills.sh" || echo "⚠️ Warning: Failed to install AI agent skills/plugins"
+
 echo "✅ Mac installation script finished!"
