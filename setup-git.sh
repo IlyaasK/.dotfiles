@@ -19,6 +19,7 @@ fi
 echo "Setting up global Git configuration..."
 git config --global user.name "$NAME"
 git config --global user.email "$EMAIL"
+git config --global core.editor "nvim"
 git config --global init.defaultBranch main
 git config --global pull.rebase true
 git config --global url."git@github.com:".insteadOf "https://github.com/"
