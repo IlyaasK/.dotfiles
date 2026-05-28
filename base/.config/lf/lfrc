@@ -5,7 +5,7 @@ set icons
 set period 1
 set hiddenfiles ".*:*.aux:*.bbl:*.bcf:*.blg:*.log:*.run.xml"
 
-cmd open {{
+cmd open ${{
     opener="${OPENER:-xdg-open}"
     command -v "$opener" >/dev/null 2>&1 || opener="open"
 
@@ -20,7 +20,7 @@ cmd open {{
 
 cmd mkdir $mkdir -p "$@"
 
-cmd extract {{
+cmd extract ${{
     clear
     set -f
     printf "%s\n\nextract? [y/N] " "$fx"
@@ -40,7 +40,7 @@ cmd extract {{
     esac
 }}
 
-cmd moveto {{
+cmd moveto ${{
     set -f
     dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs" | fzf --layout=reverse --height 40% --prompt 'Move to where? ')"
     [ -n "$dest" ] || exit 0
@@ -51,7 +51,7 @@ cmd moveto {{
     mv -iv -- $fx "$destpath"
 }}
 
-cmd copyto {{
+cmd copyto ${{
     set -f
     dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs" | fzf --layout=reverse --height 40% --prompt 'Copy to where? ')"
     [ -n "$dest" ] || exit 0
@@ -62,7 +62,7 @@ cmd copyto {{
     cp -ivr -- $fx "$destpath"
 }}
 
-cmd bulkrename {{
+cmd bulkrename ${{
     old="$(mktemp)"
     new="$(mktemp)"
     [ -n "$fs" ] && basename -a $fs > "$old" || ls > "$old"
