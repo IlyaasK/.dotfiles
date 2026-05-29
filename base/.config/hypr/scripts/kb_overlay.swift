@@ -165,11 +165,5 @@ for screen in screens {
     windows.append(window)
 }
 
-// Click anywhere to quit
-let clickMonitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { _ in
-    app.terminate(nil)
-    return nil
-}
-
-windows.forEach { $0.makeKeyAndOrderFront(nil) }
+windows.forEach { $0.orderFrontRegardless() }
 app.run()
