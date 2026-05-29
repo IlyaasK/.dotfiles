@@ -1,6 +1,38 @@
 #!/bin/bash
 set -e
 
+install_zmk_cli() {
+    echo "Installing ZMK CLI with uv..."
+
+    if [ -f "$HOME/.local/bin/env" ]; then
+        # shellcheck disable=SC1091
+        . "$HOME/.local/bin/env"
+    fi
+
+    if ! command -v uv &> /dev/null; then
+        echo "Installing uv (Fast Python package installer)..."
+        curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed to install uv"
+
+        if [ -f "$HOME/.local/bin/env" ]; then
+            # shellcheck disable=SC1091
+            . "$HOME/.local/bin/env"
+        fi
+    fi
+
+    UV_BIN="$(command -v uv || true)"
+    if [ -z "$UV_BIN" ] && [ -x "$HOME/.local/bin/uv" ]; then
+        UV_BIN="$HOME/.local/bin/uv"
+    fi
+
+    if [ -z "$UV_BIN" ]; then
+        echo "⚠️ Warning: uv is not available. Skipping ZMK CLI install."
+        return
+    fi
+
+    "$UV_BIN" tool install --force zmk || echo "⚠️ Warning: Failed to install ZMK CLI"
+    "$UV_BIN" tool update-shell || echo "⚠️ Warning: Failed to update shell PATH for uv tools"
+}
+
 echo "Updating Fedora system..."
 sudo dnf upgrade --refresh -y
 
@@ -52,8 +84,7 @@ sudo dnf install -y \
     brightnessctl \
     playerctl \
     mpv \
-    qmk \
-    zmk
+    qmk
 
 echo "Configuring Caps Lock/Escape swap for Linux XKB..."
 sudo localectl set-x11-keymap us pc105 "" caps:swapescape || echo "⚠️ Warning: Failed to configure Caps Lock/Escape swap with localectl"
@@ -70,6 +101,8 @@ fi
 
 echo "Installing uv (Fast Python package installer)..."
 curl -LsSf https://astral.sh/uv/install.sh | sh || echo "⚠️ Warning: Failed to install uv"
+
+install_zmk_cli
 
 echo "Installing Temporal CLI..."
 go install github.com/temporalio/cli/cmd/temporal@latest || echo "⚠️ Warning: Failed to install Temporal CLI"
