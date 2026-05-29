@@ -1,7 +1,7 @@
 #!/usr/bin/swift
 // kb_overlay.swift
 // Opens the current keyboard layout as a borderless, always-on-top floating
-// window on the screen where the mouse cursor currently is.
+// window on every connected screen.
 
 import Cocoa
 import Foundation
@@ -122,45 +122,48 @@ guard let img = NSImage(contentsOfFile: imgPath) else {
     exit(1)
 }
 
-// Find the screen the mouse is on (no permissions needed)
-let mouseLocation = NSEvent.mouseLocation
-let targetScreen = NSScreen.screens.first(where: { NSMouseInRect(mouseLocation, $0.frame, false) })
-    ?? NSScreen.main
-    ?? NSScreen.screens[0]
-
-let screenFrame = targetScreen.visibleFrame
-
-// Scale to 95% of screen height, preserving image aspect ratio
-let imgAspect = img.size.width / img.size.height
-let winH = floor(screenFrame.height * 0.95)
-let winW = floor(winH * imgAspect)
-
-// Centered on the focused screen
-let winX = screenFrame.midX - winW / 2
-let winY = screenFrame.midY - winH / 2
-
-let winRect = NSRect(x: winX, y: winY, width: winW, height: winH)
+let screens = NSScreen.screens
+if screens.isEmpty {
+    fputs("Error: no active screens available for keyboard overlay\n", stderr)
+    exit(1)
+}
 
 let app = NSApplication.shared
 app.setActivationPolicy(.accessory) // No dock icon
 
-let window = NSWindow(
-    contentRect: winRect,
-    styleMask: [.borderless],
-    backing: .buffered,
-    defer: false,
-    screen: targetScreen
-)
-window.level = .floating              // Always on top
-window.isOpaque = false
-window.backgroundColor = .clear
-window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
-window.hasShadow = false
+var windows: [NSWindow] = []
+for screen in screens {
+    let screenFrame = screen.visibleFrame
+    let scale = min(
+        (screenFrame.width * 0.95) / img.size.width,
+        (screenFrame.height * 0.95) / img.size.height
+    )
+    let winW = floor(img.size.width * scale)
+    let winH = floor(img.size.height * scale)
+    let winX = screenFrame.midX - winW / 2
+    let winY = screenFrame.midY - winH / 2
+    let winRect = NSRect(x: winX, y: winY, width: winW, height: winH)
 
-let imageView = NSImageView(frame: NSRect(origin: .zero, size: CGSize(width: winW, height: winH)))
-imageView.image = img
-imageView.imageScaling = .scaleAxesIndependently
-window.contentView = imageView
+    let window = NSWindow(
+        contentRect: winRect,
+        styleMask: [.borderless],
+        backing: .buffered,
+        defer: false,
+        screen: screen
+    )
+    window.title = "kb-overlay"
+    window.level = .screenSaver
+    window.isOpaque = false
+    window.backgroundColor = .clear
+    window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle, .fullScreenAuxiliary]
+    window.hasShadow = false
+
+    let imageView = NSImageView(frame: NSRect(origin: .zero, size: CGSize(width: winW, height: winH)))
+    imageView.image = img
+    imageView.imageScaling = .scaleProportionallyUpOrDown
+    window.contentView = imageView
+    windows.append(window)
+}
 
 // Click anywhere to quit
 let clickMonitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { _ in
@@ -168,5 +171,5 @@ let clickMonitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown) { 
     return nil
 }
 
-window.makeKeyAndOrderFront(nil)
+windows.forEach { $0.makeKeyAndOrderFront(nil) }
 app.run()
