@@ -7,22 +7,55 @@
 
 PID_FILE="/tmp/kb_overlay_pid"
 BINARY="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/kb_overlay"
+SOURCE="${BINARY}.swift"
 
-show_overlay() {
-    if [ ! -x "$BINARY" ]; then
-        echo "Error: overlay binary not found. Run: swiftc -o $BINARY ${BINARY}.swift" >&2
+ensure_binary() {
+    if [ ! -f "$SOURCE" ]; then
+        echo "Error: overlay source not found at $SOURCE" >&2
         exit 1
     fi
+
+    if [ ! -x "$BINARY" ] || [ "$SOURCE" -nt "$BINARY" ]; then
+        if ! command -v swiftc >/dev/null 2>&1; then
+            echo "Error: swiftc not found. Install Xcode Command Line Tools first." >&2
+            exit 1
+        fi
+
+        CLANG_MODULE_CACHE_PATH="${CLANG_MODULE_CACHE_PATH:-${TMPDIR:-/tmp}/kb-overlay-swift-module-cache}" \
+            swiftc -o "$BINARY" "$SOURCE"
+    fi
+}
+
+show_overlay() {
+    ensure_binary
 
     # Kill any existing instance first
     hide_overlay
 
-    # Launch pre-compiled binary — instant, no Swift compile delay.
-    # The Swift app auto-selects Glove80 when it is wired over USB;
-    # otherwise it falls back to the Ferris image.
-    "$BINARY" auto &
-    echo $! > "$PID_FILE"
-    echo "Keyboard overlay shown (PID: $!). Click overlay or run: $0 hide"
+    # Query only when requested. If no supported external keyboard is present,
+    # do not create a window or leave a stale PID file.
+    if ! image_info="$("$BINARY" auto --print-image 2>&1)"; then
+        printf '%s\n' "$image_info" >&2
+        exit 1
+    fi
+
+    case "$image_info" in
+        No\ supported\ external\ keyboard*)
+            printf '%s\n' "$image_info"
+            return
+            ;;
+    esac
+
+    image_path="${image_info#*$'\t'}"
+    if [ -z "$image_path" ] || [ "$image_path" = "$image_info" ]; then
+        echo "Error: overlay could not resolve a layout image." >&2
+        exit 1
+    fi
+
+    "$BINARY" "$image_path" &
+    overlay_pid=$!
+    echo "$overlay_pid" > "$PID_FILE"
+    echo "Keyboard overlay shown (PID: $overlay_pid). Click overlay or run: $0 hide"
 }
 
 hide_overlay() {

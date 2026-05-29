@@ -50,11 +50,14 @@ func commandOutput(_ launchPath: String, _ arguments: [String]) -> String {
     }
 }
 
-func connectedUSBKeyboard() -> String {
-    let usbTree = commandOutput("/usr/sbin/ioreg", ["-p", "IOUSB", "-l", "-w", "0"])
-    let lower = usbTree.lowercased()
+func connectedKeyboard() -> String? {
+    let registryText = [
+        commandOutput("/usr/sbin/ioreg", ["-p", "IOUSB", "-l", "-w", "0"]),
+        commandOutput("/usr/sbin/ioreg", ["-r", "-c", "IOHIDDevice", "-l", "-w", "0"]),
+        commandOutput("/usr/sbin/system_profiler", ["SPBluetoothDataType"]),
+    ].joined(separator: "\n").lowercased()
 
-    if lower.contains("glove80") || lower.contains("moergo") {
+    if registryText.contains("glove80") || registryText.contains("moergo") {
         return "glove80"
     }
 
@@ -68,30 +71,33 @@ func connectedUSBKeyboard() -> String {
         "caterina",
     ]
 
-    if ferrisMarkers.contains(where: { lower.contains($0) }) {
+    if ferrisMarkers.contains(where: { registryText.contains($0) }) {
         return "ferris"
     }
 
-    return "ferris"
+    return nil
 }
 
 func automaticImage() -> KeyboardImage {
-    switch connectedUSBKeyboard() {
+    guard let keyboard = connectedKeyboard() else {
+        fputs("No supported external keyboard detected; not showing overlay.\n", stderr)
+        exit(0)
+    }
+
+    switch keyboard {
     case "glove80":
         if let glove80Path = firstExistingPath(glove80ImageCandidates) {
             return KeyboardImage(name: "Glove80", path: glove80Path)
         }
-        fallthrough
-    default:
+    case "ferris":
         if let ferrisPath = firstExistingPath(ferrisImageCandidates) {
             return KeyboardImage(name: "Ferris", path: ferrisPath)
         }
-        if let glove80Path = firstExistingPath(glove80ImageCandidates) {
-            return KeyboardImage(name: "Glove80", path: glove80Path)
-        }
+    default:
+        break
     }
 
-    fputs("Error: no keyboard layout image found next to kb_overlay\n", stderr)
+    fputs("Error: no layout image found for detected keyboard: \(keyboard)\n", stderr)
     exit(1)
 }
 
