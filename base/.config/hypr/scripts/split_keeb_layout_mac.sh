@@ -6,14 +6,9 @@
 # Usage: split_keeb_layout_mac.sh show | hide | toggle
 
 PID_FILE="/tmp/kb_overlay_pid"
-IMAGE_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/split_keep_layout_new.jpg"
 BINARY="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/kb_overlay"
 
 show_overlay() {
-    if [ ! -f "$IMAGE_PATH" ]; then
-        echo "Error: keymap image not found at $IMAGE_PATH" >&2
-        exit 1
-    fi
     if [ ! -x "$BINARY" ]; then
         echo "Error: overlay binary not found. Run: swiftc -o $BINARY ${BINARY}.swift" >&2
         exit 1
@@ -22,8 +17,10 @@ show_overlay() {
     # Kill any existing instance first
     hide_overlay
 
-    # Launch pre-compiled binary — instant, no Swift compile delay
-    "$BINARY" "$IMAGE_PATH" &
+    # Launch pre-compiled binary — instant, no Swift compile delay.
+    # The Swift app auto-selects Glove80 when it is wired over USB;
+    # otherwise it falls back to the Ferris image.
+    "$BINARY" auto &
     echo $! > "$PID_FILE"
     echo "Keyboard overlay shown (PID: $!). Click overlay or run: $0 hide"
 }
