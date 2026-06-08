@@ -17,6 +17,14 @@ defaults write -g InitialKeyRepeat -int 10
 defaults write -g KeyRepeat -int 1
 defaults write -g ApplePressAndHoldEnabled -bool false
 
+echo "2b. Remapping macOS app menu shortcuts to Alt..."
+# macOS key equivalents use ~ for Option/Alt. These target standard app menu item names.
+defaults write -g NSUserKeyEquivalents -dict-add "Copy" -string "~c"
+defaults write -g NSUserKeyEquivalents -dict-add "Paste" -string "~v"
+defaults write -g NSUserKeyEquivalents -dict-add "Cut" -string "~x"
+defaults write -g NSUserKeyEquivalents -dict-add "Quit" -string "~q"
+echo "Note: apps with custom menu item names may need app-specific follow-up remaps."
+
 echo "3. Disabling natural scrolling..."
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
