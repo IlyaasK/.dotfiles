@@ -60,6 +60,7 @@ This script will:
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
 - `setup-updater-cron.sh` - Installs a weekly background cronjob to safely fetch OS updates.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
+- `setup-parallel.sh` - Shared helper for running independent setup tasks concurrently.
 - `deploy.sh` - Uses Stow to safely link your dotfiles.
 
 ## AI Agent Skills
