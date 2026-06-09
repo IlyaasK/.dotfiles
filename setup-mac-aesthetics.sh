@@ -6,34 +6,10 @@ if [[ "$(uname)" != "Darwin" ]]; then
     exit 1
 fi
 
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$DOTFILES_DIR/setup-parallel.sh"
+
 echo "Setting up macOS to feel like Hyprland..."
-
-parallel_pids=()
-parallel_names=()
-
-run_parallel_task() {
-    local name="$1"
-    shift
-
-    "$@" &
-    parallel_pids+=("$!")
-    parallel_names+=("$name")
-}
-
-wait_parallel_tasks() {
-    local failed=0
-
-    for i in "${!parallel_pids[@]}"; do
-        if wait "${parallel_pids[$i]}"; then
-            echo "  ✅ ${parallel_names[$i]} complete"
-        else
-            echo "  ⚠️  ${parallel_names[$i]} failed"
-            failed=1
-        fi
-    done
-
-    return "$failed"
-}
 
 set_wallpaper() {
     echo "Setting the wallpaper..."
