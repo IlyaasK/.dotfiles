@@ -3,6 +3,7 @@ set -e
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BREWFILE="$DOTFILES_DIR/Brewfile"
+source "$DOTFILES_DIR/setup-parallel.sh"
 
 export NONINTERACTIVE=1
 export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications"
@@ -54,6 +55,24 @@ fi
 
 mkdir -p "$HOME/Applications"
 
+install_codex_cli() {
+  echo "Installing Codex CLI via npm..."
+  if command -v npm &>/dev/null; then
+    npm install -g @openai/codex || echo "⚠️ Warning: Failed to install Codex CLI. Make sure Node.js is correctly set up."
+  else
+    echo "⚠️ Warning: npm is not installed. Skipping Codex CLI install."
+  fi
+}
+
+install_bootdev_cli() {
+  echo "Installing bootdev CLI..."
+  if command -v go &>/dev/null; then
+    go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
+  else
+    echo "⚠️ Warning: Go is not installed. Skipping bootdev."
+  fi
+}
+
 echo "Updating Homebrew..."
 brew update
 
@@ -64,19 +83,10 @@ fi
 
 install_zmk_cli
 
-echo "Installing Codex CLI via npm..."
-if command -v npm &>/dev/null; then
-  npm install -g @openai/codex || echo "⚠️ Warning: Failed to install Codex CLI. Make sure Node.js is correctly set up."
-else
-  echo "⚠️ Warning: npm is not installed. Skipping Codex CLI install."
-fi
-
-echo "Installing bootdev CLI..."
-if command -v go &>/dev/null; then
-  go install github.com/bootdotdev/bootdev@latest || echo "⚠️ Warning: Failed to install bootdev"
-else
-  echo "⚠️ Warning: Go is not installed. Skipping bootdev."
-fi
+echo "Installing extra CLIs in parallel..."
+run_parallel_task "Codex CLI" install_codex_cli
+run_parallel_task "bootdev CLI" install_bootdev_cli
+wait_parallel_tasks || true
 
 echo "Installing AI agent skills/plugins..."
 bash "$DOTFILES_DIR/setup-ai-skills.sh" || echo "⚠️ Warning: Failed to install AI agent skills/plugins"
