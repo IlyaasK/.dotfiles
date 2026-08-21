@@ -1,4 +1,5 @@
 export ZDOTDIR="$HOME/.config/zsh"
+
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
@@ -86,6 +87,11 @@ bindkey '^[[P' delete-char
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
+# Fuzzy history search with ctrl-r, file pick with ctrl-t, and directory jump with alt-c.
+if command -v fzf >/dev/null 2>&1; then
+    eval "$(fzf --zsh)"
+fi
+
 source_first() {
     local plugin
     for plugin in "$@"; do
@@ -100,6 +106,8 @@ source_first() {
 ZSH_PLUGIN_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 if command -v brew &>/dev/null; then
     HOMEBREW_PREFIX="$(brew --prefix)"
+elif [[ -d /opt/homebrew ]]; then
+    HOMEBREW_PREFIX="/opt/homebrew"
 fi
 
 source_first \
@@ -143,7 +151,22 @@ export LANG="en_US.UTF-8"
 export LANGUAGE="en_US:en"
 
 #exporting go
+export PATH="$HOME/.local/bin:$PATH"
 export PATH=$PATH:$HOME/.local/opt/go/bin
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH=$PATH:$HOME/go/bin
+export PATH="/opt/homebrew/opt/avr-gcc@8/bin:/opt/homebrew/opt/arm-none-eabi-gcc@8/bin:$PATH"
+export PATH="/opt/homebrew/opt/avr-binutils/bin:/opt/homebrew/opt/avr-gcc@8/bin:/opt/homebrew/opt/arm-none-eabi-binutils/bin:/opt/homebrew/opt/arm-none-eabi-gcc@8/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/ilyaas/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
+# >>> bun global bin (xtooey) >>>
+export PATH="$HOME/.cache/.bun/bin:$PATH"
+# <<< bun global bin >>>

@@ -21,15 +21,16 @@ alt-enter = 'exec-and-forget open -n -a Ghostty'
 alt-b = 'exec-and-forget open -a Zen'
 alt-n = 'exec-and-forget open -a "Standard Notes"'
 alt-s = 'exec-and-forget open -a Signal'
-alt-r = 'exec-and-forget open -a Raycast' # Using Raycast instead of Rofi/dmenu
+# Raycast owns Option+R as its native global hotkey.
 alt-e = 'exec-and-forget open ~'          # Open Finder in home directory (your File Manager)
 alt-slash = 'exec-and-forget open ~/.config/aerospace/aerospace.toml' # Help / Cheat Sheet
 
+# Consume Alt+V before macOS turns it into “√”, then invoke Paste directly.
+alt-v = 'exec-and-forget ~/.config/aerospace/paste.sh'
+
 # --- Window Management ---
-alt-q = 'close'
-alt-v = 'layout floating tiling'         # Toggle floating
+alt-f = 'layout floating tiling'         # Toggle floating
 alt-j = 'layout horizontal vertical'     # Toggle split direction (closest to dwindle togglesplit)
-alt-f = 'fullscreen'
 
 # --- Split Keyboard Layout Overlay (mirrors Hyprland Super+K hold/release → toggle) ---
 # Hyprland: bind = Super, K → show | bindrt = Super, K → hide (hold-to-show)
@@ -48,11 +49,18 @@ alt-shift-right = 'move right'
 alt-shift-up = 'move up'
 alt-shift-down = 'move down'
 
-# --- Move Window to Monitor ---
+# --- Move Focused Window to Monitor ---
 alt-ctrl-left = 'move-node-to-monitor --wrap-around next'
 alt-ctrl-right = 'move-node-to-monitor --wrap-around prev'
 alt-ctrl-up = 'move-node-to-monitor --wrap-around next'
 alt-ctrl-down = 'move-node-to-monitor --wrap-around prev'
+
+# --- Move Current Workspace to Monitor ---
+# Moves the entire workspace, not just the focused window.
+alt-ctrl-shift-left = 'move-workspace-to-monitor --wrap-around left'
+alt-ctrl-shift-right = 'move-workspace-to-monitor --wrap-around right'
+alt-ctrl-shift-up = 'move-workspace-to-monitor --wrap-around up'
+alt-ctrl-shift-down = 'move-workspace-to-monitor --wrap-around down'
 
 # --- Workspaces ---
 alt-1 = 'workspace 1'
@@ -65,6 +73,18 @@ alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-0 = 'workspace 10'
+
+
+[workspace-to-monitor-force-assignment]
+1 = ['DELL P3425WE', 'Built-in Display']
+2 = ['DELL P3425WE', 'Built-in Display']
+3 = ['DELL P3425WE', 'Built-in Display']
+4 = ['DELL P3425WE', 'Built-in Display']
+5 = ['LG HDR 4K', 'Built-in Display']
+6 = ['LG HDR 4K', 'Built-in Display']
+7 = ['LG HDR 4K', 'Built-in Display']
+8 = ['LG HDR 4K', 'Built-in Display']
+9 = ['Built-in Display']
 
 # --- Move to Workspace ---
 alt-shift-1 = 'move-node-to-workspace 1'
@@ -81,9 +101,6 @@ alt-shift-0 = 'move-node-to-workspace 10'
 # --- Scratchpad (Magic Workspace in Hyprland) ---
 alt-m = 'workspace magic'
 alt-shift-m = 'move-node-to-workspace magic'
-
-# X Scratchpad (Zen Browser Tweet)
-alt-x = 'exec-and-forget open "https://x.com/intent/tweet"'
 
 # ---------------------------------------------------------------------------
 # Window Rules

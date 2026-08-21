@@ -6,8 +6,10 @@ These are my personal dotfiles, configured specifically for **Fedora Asahi Remix
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/IlyaasK/.dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
+mkdir -p ~/workspace/github.com/IlyaasK
+git clone https://github.com/IlyaasK/.dotfiles.git ~/workspace/github.com/IlyaasK/.dotfiles
+ln -s ~/workspace/github.com/IlyaasK/.dotfiles ~/.dotfiles
+cd ~/workspace/github.com/IlyaasK/.dotfiles
 ```
 
 ### 2. Install Packages

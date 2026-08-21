@@ -17,30 +17,37 @@ defaults write -g InitialKeyRepeat -int 10
 defaults write -g KeyRepeat -int 1
 defaults write -g ApplePressAndHoldEnabled -bool false
 
-echo "3. Disabling natural scrolling..."
+echo "3. Mapping common menu actions to Alt-based shortcuts..."
+# In Cocoa key-equivalent strings, "~" means Option/Alt.
+defaults write -g NSUserKeyEquivalents -dict-add "Copy" "~c"
+defaults write -g NSUserKeyEquivalents -dict-add "Paste" "~v"
+defaults write -g NSUserKeyEquivalents -dict-add "Cut" "~x"
+defaults write -g NSUserKeyEquivalents -dict-add "Quit" "~q"
+
+echo "4. Disabling natural scrolling..."
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
-echo "4. Enabling tap to click..."
+echo "5. Enabling tap to click..."
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-echo "5. Disabling macOS Window Animations..."
+echo "6. Disabling macOS Window Animations..."
 defaults write com.apple.universalaccess reduceMotion -bool true
 defaults write com.apple.Accessibility ReduceMotionEnabled -bool true
 defaults write -g NSWindowResizeTime -float 0.001
 killall Dock Finder SystemUIServer || true
 
-echo "6. Keeping Spaces separate per display..."
+echo "7. Keeping Spaces separate per display..."
 defaults write com.apple.spaces "spans-displays" -bool false
 killall SystemUIServer || true
 
-echo "7. Reducing transparency and Liquid Glass effects..."
+echo "8. Reducing transparency and Liquid Glass effects..."
 defaults write com.apple.universalaccess reduceTransparency -bool true
 defaults write com.apple.Accessibility ReduceTransparencyEnabled -bool true
 killall cfprefsd Dock Finder SystemUIServer || true
 
-echo "8. Installing and starting JankyBorders for window borders..."
+echo "9. Installing and starting JankyBorders for window borders..."
 if ! command -v borders &> /dev/null; then
     brew tap FelixKratz/formulae
     brew install borders
@@ -48,7 +55,7 @@ fi
 # Start borders as a background service so it runs on startup
 brew services start borders || echo "Note: Run 'borders &' manually if service fails."
 
-echo "9. Setting the wallpaper..."
+echo "10. Setting the wallpaper..."
 # Ensure the wallpaper exists in the stowed directory
 WALLPAPER_PATH="$HOME/.config/hypr/current-wallpaper.jpg"
 if [ -f "$WALLPAPER_PATH" ]; then
@@ -57,7 +64,7 @@ else
     echo "Wallpaper not found at $WALLPAPER_PATH. Skipping."
 fi
 
-echo "10. Auto-hiding the macOS Dock and Menu Bar..."
+echo "11. Auto-hiding the macOS Dock and Menu Bar..."
 defaults write com.apple.dock autohide -bool true
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
 defaults write com.apple.dock persistent-apps -array
@@ -67,30 +74,30 @@ defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0.15
 killall Dock || true
 
-echo "11. Starting AutoRaise (Focus follows mouse)..."
+echo "12. Starting AutoRaise (Focus follows mouse)..."
 if command -v autoraise &> /dev/null; then
     brew services start autoraise || echo "Note: Run 'autoraise' manually if service fails."
 else
     echo "AutoRaise not installed. Run ./install-mac.sh first if you want focus-follows-mouse."
 fi
 
-echo "12. Disabling autocorrect, autocapitalize, and smart substitutions..."
+echo "13. Disabling autocorrect, autocapitalize, and smart substitutions..."
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
-echo "13. Finder: show all file extensions, show hidden/dot files, disable extension change warning..."
+echo "14. Finder: show all file extensions, show hidden/dot files, disable extension change warning..."
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 killall Finder || true
 
-echo "14. Screenshots: save to Desktop, no drop shadow..."
+echo "15. Screenshots: save to Desktop, no drop shadow..."
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 defaults write com.apple.screencapture disable-shadow -bool true
 
-echo "15. Setting up split keyboard layout overlay (Mac port of feh overlay)..."
+echo "16. Setting up split keyboard layout overlay (Mac port of feh overlay)..."
 KEEB_SCRIPT="${HOME}/.config/hypr/scripts/split_keeb_layout_mac.sh"
 KEEB_SWIFT="${HOME}/.config/hypr/scripts/kb_overlay.swift"
 KEEB_BIN="${HOME}/.config/hypr/scripts/kb_overlay"
