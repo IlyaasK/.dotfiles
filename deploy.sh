@@ -13,7 +13,7 @@ echo "Preparing to deploy dotfiles using GNU Stow..."
 
 # Backup existing real directories/files to avoid Stow conflicts
 # since Stow will refuse to overwrite real files with symlinks.
-for d in ghostty hypr nvim shell zsh; do
+for d in ghostty hypr lf nvim shell zsh; do
     target_dir="$HOME/.config/$d"
     if [ -e "$target_dir" ] && [ ! -L "$target_dir" ]; then
         echo "Backing up existing directory $target_dir to ${target_dir}.bak"
