@@ -5,8 +5,15 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Ensure stow is installed
 if ! command -v stow &> /dev/null; then
-    echo "Stow is not installed. Attempting to install via dnf..."
-    sudo dnf install -y stow
+    echo "Stow is not installed. Attempting to install it..."
+    if command -v dnf &> /dev/null; then
+        sudo dnf install -y stow
+    elif command -v pacman &> /dev/null; then
+        sudo pacman -S --noconfirm stow
+    else
+        echo "Could not determine package manager. Install stow manually and re-run."
+        exit 1
+    fi
 fi
 
 echo "Preparing to deploy dotfiles using GNU Stow..."
