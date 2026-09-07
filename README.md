@@ -49,12 +49,22 @@ This script will:
 4. Install and start JankyBorders (for active window borders)
 5. Set your desktop wallpaper
 
+### 5. Omarchy (Arch-based)
+Omarchy is Arch-based (Hyprland + Quickshell). One-shot setup:
+```bash
+git clone https://github.com/IlyaasK/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles
+bash install-omarchy.sh
+```
+Installs packages (feh, zsh + plugins), copies your configs (nvim, ghostty, zsh/shell, lf, rofi, tmux), applies the Omarchy Hyprland overrides (no gaps, focus border, `Super+Q/R/N/Shift+K`), sets ghostty + zen defaults, makes zsh the login shell while preserving Omarchy's PATH/aliases, and ports `~/.omp` when `OMP_SOURCE` is set (e.g. `OMP_SOURCE=mac bash install-omarchy.sh`).
+
 ## Directory Structure
 - `base/` - The core GNU Stow package. Everything in here perfectly mirrors your home folder (`~/`). For example, `base/.config/` maps to `~/.config/`.
 - `Brewfile` - Declarative Homebrew package and cask list for macOS.
 - `install-mac.sh` - Installs macOS packages by running `brew bundle`.
 - `install-fedora.sh` - Installs Fedora dnf packages.
 - `install-arch.sh` - Installs Arch pacman/AUR packages (using paru).
+- `install-omarchy.sh` - One-shot **Omarchy** (Arch + Hyprland + Quickshell) setup: packages, configs, Hyprland overrides, defaults, zsh, omp.
+- `omarchy/` - Omarchy-specific configs (Hyprland `bindings.lua` + `looknfeel.lua`, keyboard-layout overlay).
 - `setup-zsh-plugins.sh` - Installs Zsh plugins into `${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins` for platforms that do not provide them through the package manager.
 - `setup-ai-skills.sh` - Installs Cursor plugins from `cursor/plugins` into Cursor, Claude Code, and Codex.
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
