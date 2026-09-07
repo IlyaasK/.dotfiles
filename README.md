@@ -44,9 +44,10 @@ If you are running macOS, you can configure it to behave like a tiling window ma
 ```
 This script will:
 1. Remap Caps Lock to Escape
-2. Disable macOS system animations for instant window tiling
-3. Install and start JankyBorders (for active window borders)
-4. Set your desktop wallpaper
+2. Remap macOS menu Copy/Paste/Cut/Quit to Alt+C/V/X/Q
+3. Disable macOS system animations for instant window tiling
+4. Install and start JankyBorders (for active window borders)
+5. Set your desktop wallpaper
 
 ## Directory Structure
 - `base/` - The core GNU Stow package. Everything in here perfectly mirrors your home folder (`~/`). For example, `base/.config/` maps to `~/.config/`.
@@ -59,6 +60,7 @@ This script will:
 - `setup-git.sh` - Configures Git and generates an SSH key for GitHub.
 - `setup-updater-cron.sh` - Installs a weekly background cronjob to safely fetch OS updates.
 - `setup-mac-aesthetics.sh` - Terminal commands to tweak macOS to feel like Hyprland.
+- `setup-parallel.sh` - Shared helper for running independent setup tasks concurrently.
 - `deploy.sh` - Uses Stow to safely link your dotfiles.
 
 ## AI Agent Skills
