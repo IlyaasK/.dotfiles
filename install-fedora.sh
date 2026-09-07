@@ -84,6 +84,8 @@ sudo dnf install -y \
     brightnessctl \
     playerctl \
     mpv \
+    feh \
+    thunar \
     qmk
 
 echo "Configuring Caps Lock/Escape swap for Linux XKB..."
@@ -123,6 +125,9 @@ echo "--------------------------------------------------------"
 echo "Note: If 'ghostty' or 'zen-browser' failed to install,"
 echo "you may need to install them via Flatpak or COPR."
 echo "Example for Ghostty (if COPR exists) or build from source."
+echo "COPR extras for full Hyprland setup:"
+echo "  hyprshot    -> dnf copr enable nett00n/hyprland"
+echo "  signal-desktop -> dnf copr enable useidel/signal-desktop"
 echo "--------------------------------------------------------"
 
 echo "✅ Fedora installation script finished!"

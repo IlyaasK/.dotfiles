@@ -101,6 +101,10 @@ sudo pacman -S --needed --noconfirm \
     rofi-wayland \
     brightnessctl \
     playerctl \
+    feh \
+    hyprshot \
+    thunar \
+    signal-desktop \
     qmk \
     ttf-jetbrains-mono-nerd
 

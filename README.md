@@ -35,6 +35,8 @@ Once the packages are installed, deploy the symlinks to your home directory:
 ```
 *Note: This script will automatically backup any existing folders in `~/.config/` or `~/.zshenv` to `.bak` before symlinking to avoid conflicts.*
 
+**Hyprland config**: the live config is `~/.config/hypr/hyprland.lua` (Lua, requires Hyprland ≥ 0.56). The legacy `hyprland.conf` is gone — `hyprland.lua` is the single source of truth. The `Super+K` keyboard-layout overlay (hold to show, release to hide) uses `~/.config/hypr/scripts/split_keeb_layout.sh`, which needs `feh` and `python3` (both installed by the Linux installers above).
+
 ### 4. macOS Aesthetics & Window Management
 If you are running macOS, you can configure it to behave like a tiling window manager (similar to Hyprland) using AeroSpace and JankyBorders. Run the aesthetics script:
 ```bash
