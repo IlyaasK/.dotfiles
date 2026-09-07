@@ -27,6 +27,7 @@ alt-slash = 'exec-and-forget open ~/.config/aerospace/aerospace.toml' # Help / C
 
 # --- Window Management ---
 alt-f = 'layout floating tiling'         # Toggle floating
+alt-shift-f = 'fullscreen'
 alt-j = 'layout horizontal vertical'     # Toggle split direction (closest to dwindle togglesplit)
 
 # --- Split Keyboard Layout Overlay (mirrors Hyprland Super+K hold/release → toggle) ---

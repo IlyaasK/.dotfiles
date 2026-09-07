@@ -65,7 +65,6 @@ echo "2b. Remapping macOS app menu shortcuts to Alt..."
 defaults write -g NSUserKeyEquivalents -dict-add "Copy" -string "~c"
 defaults write -g NSUserKeyEquivalents -dict-add "Paste" -string "~v"
 defaults write -g NSUserKeyEquivalents -dict-add "Cut" -string "~x"
-defaults write -g NSUserKeyEquivalents -dict-add "Quit" -string "~q"
 echo "Note: apps with custom menu item names may need app-specific follow-up remaps."
 
 echo "3. Disabling natural scrolling..."
@@ -129,7 +128,7 @@ echo "13. Running independent mac setup tasks in parallel..."
 run_parallel_task "wallpaper" set_wallpaper
 run_parallel_task "AutoRaise" start_autoraise
 run_parallel_task "keyboard overlay" setup_keyboard_overlay
-wait_parallel_tasks
+wait_parallel_tasks || true
 
 echo "✅ macOS aesthetics setup complete!"
 echo "Note: The Caps Lock mapping via hidutil will reset on reboot."
