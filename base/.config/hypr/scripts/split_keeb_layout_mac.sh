@@ -6,26 +6,43 @@
 # Usage: split_keeb_layout_mac.sh show | hide | toggle
 
 PID_FILE="/tmp/kb_overlay_pid"
-IMAGE_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/split_keep_layout_new.jpg"
 BINARY="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/kb_overlay"
+SOURCE="${BINARY}.swift"
+SCRIPT_DIR="$(cd "$(dirname "$BINARY")" && pwd)"
+GLOVE80_IMAGE="${SCRIPT_DIR}/glove80_layout.png"
+
+ensure_binary() {
+    if [ ! -f "$SOURCE" ]; then
+        echo "Error: overlay source not found at $SOURCE" >&2
+        exit 1
+    fi
+
+    if [ ! -x "$BINARY" ] || [ "$SOURCE" -nt "$BINARY" ]; then
+        if ! command -v swiftc >/dev/null 2>&1; then
+            echo "Error: swiftc not found. Install Xcode Command Line Tools first." >&2
+            exit 1
+        fi
+
+        CLANG_MODULE_CACHE_PATH="${CLANG_MODULE_CACHE_PATH:-${TMPDIR:-/tmp}/kb-overlay-swift-module-cache}" \
+            swiftc -o "$BINARY" "$SOURCE"
+    fi
+}
 
 show_overlay() {
-    if [ ! -f "$IMAGE_PATH" ]; then
-        echo "Error: keymap image not found at $IMAGE_PATH" >&2
-        exit 1
-    fi
-    if [ ! -x "$BINARY" ]; then
-        echo "Error: overlay binary not found. Run: swiftc -o $BINARY ${BINARY}.swift" >&2
-        exit 1
-    fi
+    ensure_binary
 
     # Kill any existing instance first
     hide_overlay
 
-    # Launch pre-compiled binary — instant, no Swift compile delay
-    "$BINARY" "$IMAGE_PATH" &
-    echo $! > "$PID_FILE"
-    echo "Keyboard overlay shown (PID: $!). Click overlay or run: $0 hide"
+    if [ ! -f "$GLOVE80_IMAGE" ]; then
+        echo "Error: Glove80 layout image not found at $GLOVE80_IMAGE" >&2
+        exit 1
+    fi
+
+    "$BINARY" "$GLOVE80_IMAGE" &
+    overlay_pid=$!
+    echo "$overlay_pid" > "$PID_FILE"
+    echo "Keyboard overlay shown (PID: $overlay_pid). Click overlay or run: $0 hide"
 }
 
 hide_overlay() {
